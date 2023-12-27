@@ -80,7 +80,7 @@
             var lines = inputHtml.split('\n');
             var outputHtml = lines
                 .filter(line => line.trim() !== '') // Remove linhas em branco
-                .map(line => `"${line.trim()}"`)
+                .map(line => `"${line.trim().replace(/"/g, '\\"')}"`)
                 .join('\n');
             document.getElementById('outputHtml').value = outputHtml;
         }
@@ -90,7 +90,7 @@
             var lines = inputHtml.split('\n');
             var outputHtml = lines
                 .filter(line => line.trim() !== '') // Remove linhas em branco
-                .map(line => line.replace(/^"(.*)"$/, '$1'))
+                .map(line => line.replace(/^[\s"']+|[\s"']+$/g, ''))
                 .join('\n');
             document.getElementById('outputHtml').value = outputHtml;
         }
