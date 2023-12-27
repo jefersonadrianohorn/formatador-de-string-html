@@ -4,8 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link rel="icon" href="formater.png" type="image/x-icon">
-
+    <link rel="icon" href="formater.png" type="image/x-icon">
     <title>Adicionar/Remover Aspas</title>
     <style>
         body {
@@ -62,6 +61,21 @@
         .copy-button:hover {
             background-color: #27ae60;
         }
+
+        .clear-storage-button {
+            font-size: 16px;
+            padding: 10px 20px;
+            cursor: pointer;
+            background-color: #e74c3c;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            margin-top: 10px;
+        }
+
+        .clear-storage-button:hover {
+            background-color: #c0392b;
+        }
     </style>
 </head>
 
@@ -75,8 +89,11 @@
     <textarea id="outputHtml" placeholder="HTML com aspas adicionadas..."></textarea>
     <br>
     <button class="copy-button" onclick="copiarConteudo()">Copiar</button>
+    <br>
+    <button class="clear-storage-button" onclick="limparLocalStorage()">Limpar Local Storage</button>
 
     <script>
+        // Função para adicionar aspas
         function adicionarAspas() {
             var inputHtml = document.getElementById('inputHtml').value;
             var lines = inputHtml.split('\n');
@@ -85,8 +102,10 @@
                 .map(line => `"${line.trim().replace(/"/g, '\\"')}"`)
                 .join('\n');
             document.getElementById('outputHtml').value = outputHtml;
+            salvarLocalStorage();
         }
 
+        // Função para remover aspas
         function removerAspas() {
             var inputHtml = document.getElementById('inputHtml').value;
             var lines = inputHtml.split('\n');
@@ -95,13 +114,37 @@
                 .map(line => line.replace(/^[\s"']+|[\s"']+$/g, ''))
                 .join('\n');
             document.getElementById('outputHtml').value = outputHtml;
+            salvarLocalStorage();
         }
 
+        // Função para copiar conteúdo para a área de transferência
         function copiarConteudo() {
             var outputHtml = document.getElementById('outputHtml');
             outputHtml.select();
             document.execCommand('copy');
             alert('Conteúdo copiado para a área de transferência!');
+        }
+
+        // Função para salvar no localStorage
+        function salvarLocalStorage() {
+            var inputHtml = document.getElementById('inputHtml').value;
+            localStorage.setItem('inputHtml', inputHtml);
+        }
+
+        // Função para carregar do localStorage
+        function carregarLocalStorage() {
+            var inputHtml = localStorage.getItem('inputHtml') || '';
+            document.getElementById('inputHtml').value = inputHtml;
+        }
+
+        // Carregar conteúdo do localStorage ao carregar a página
+        carregarLocalStorage();
+
+        // Função para limpar o localStorage
+        function limparLocalStorage() {
+            localStorage.removeItem('inputHtml');
+            document.getElementById('inputHtml').value = '';
+            document.getElementById('outputHtml').value = '';
         }
     </script>
 </body>
